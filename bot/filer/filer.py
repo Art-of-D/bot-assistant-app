@@ -2,7 +2,7 @@ import pickle
 from bot.internal.manager import Manager
 
 def load_contacts(filepath="./bot/storage/data.pkl"):
-    ab = Manager()
+    manager = Manager()
     try:
         with open(filepath, "rb") as file:
             print("Loading contacts...")
@@ -12,10 +12,10 @@ def load_contacts(filepath="./bot/storage/data.pkl"):
             return contacts
     except FileNotFoundError:
         print("No contacts found. Please add new contact.")
-        return ab
+        return manager
     except (EOFError, ValueError) as e:
         print(f"Error loading contacts: {e}")
-        return ab
+        return manager
 
 
 def record_contacts(contacts, filepath="./bot/storage/data.pkl"):

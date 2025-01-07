@@ -12,9 +12,9 @@ def parse_input(user_input):
 
 
 def main():
-    
     print("Welcome to the assistant bot!")
     manager = load_contacts()
+    
     while True:
         user_input = input("Enter a command: ")
         command, *args = parse_input(user_input)
@@ -59,20 +59,29 @@ def main():
         elif command == "note":
             print("add note")
             # print(manager.add_note(args[0], args[1]))
+        elif command == "show-note":
+            print("show note")
+            # print(manager.get_note(args[0]))
+        elif command == "edit-note":
+            print("edit note")
+            # print(manager.edit_note(args[0], args[1]))
+        elif command == "edit-tag":
+            print("edit tag")
+            # print(manager.edit_tag(args[0], args[1]))
+        elif command == "delete-note":
+            print("delete note")
+            # print(manager.delete_note(args[0]))
         elif command == "notes":
             print("show all notes")
-            # print(manager.notes())
-        elif command == "tag":
-            print("add tag")
-            # print(manager.add_tag(args[0], args[1]))
+            # print(manager.get_all_notes())
         elif command == "delete-tag":
             print("delete tag")
             # print(manager.delete_tag(args[0], args[1]))
         elif command == "tags":
             print("show all tags")
-            # print(manager.tags())
+            # print(manager.get_all_tags())
         elif command == "commands":
-            print("Available commands: hello - greetings\n, add - add new contact or new info for the contact\n, change - change contact info\n, delete - delete contact\n, remove - delete phone,  all - show all contacts, find - find contact by name, phone, email, address\n, show-birthday - show birthday of some contact\n, birthdays - show all birthdays on the week for your contacts\n, note - add new note\n, notes - show all notes\n, tag - add new tag\n, tags - show all tags\n, close OR exit")
+            print("Available commands:\n-hello - greetings\n-add - add new contact or new info for the contact\n-change - change contact info\n-delete - delete contact\n-remove - delete phone\n-all - show all contacts\n-find - find contact by name phone, email, address\n-show-birthday - show birthday of some contact\n-birthdays - show all birthdays on the week for your contacts\n-note - to add new note\n-show-note - to show note\n-edit-note - to edit note\n-edit-tag - to edit tag\n-delete-note - delete note\n-notes - to show all notes\n-tags - show all tags\n-close OR exit")
         else:
             print("Invalid command. If you need help, type 'commands'.")
 
