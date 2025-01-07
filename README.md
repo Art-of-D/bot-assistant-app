@@ -5,7 +5,7 @@
 ### 1. Clone the repository
 
 ```
-~ git clone \
+~ git clone https://github.com/Art-of-D/bot-assistant-app.git \
 ~ cd <project_folder> \
 ```
 
@@ -72,6 +72,10 @@ bot/
 │ │ ├── birthday.py
 │ │ ├── name.py
 │ │ ├── ...
+│ │ ├──note
+│ │ │ ├──note.py
+│ │ │ ├──notes.py
+│ │ │ ├──tag.py
 │ ├── decorators/ # for all decorators
 │ │ ├── errorhandler.py
 │ ├── **init**.py

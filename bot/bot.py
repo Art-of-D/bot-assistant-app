@@ -12,9 +12,9 @@ def parse_input(user_input):
 
 
 def main():
-    
     print("Welcome to the assistant bot!")
     manager = load_contacts()
+    
     while True:
         user_input = input("Enter a command: ")
         command, *args = parse_input(user_input)
@@ -72,7 +72,7 @@ def main():
             print("show all tags")
             # print(manager.tags())
         elif command == "commands":
-            print("Available commands: hello - greetings\n, add - add new contact or new info for the contact\n, change - change contact info\n, delete - delete contact\n, remove - delete phone,  all - show all contacts, find - find contact by name, phone, email, address\n, show-birthday - show birthday of some contact\n, birthdays - show all birthdays on the week for your contacts\n, note - add new note\n, notes - show all notes\n, tag - add new tag\n, tags - show all tags\n, close OR exit")
+            print("Available commands:\n-hello - greetings\n-add - add new contact or new info for the contact\n-change - change contact info\n-delete - delete contact\n-remove - delete phone\n-all - show all contacts\n-find - find contact by name phone, email, address\n-show-birthday - show birthday of some contact\n-birthdays - show all birthdays on the week for your contacts\n-note - add new note\n-notes - show all notes\n-tag - add new tag\n-tags - show all tags\n-close OR exit")
         else:
             print("Invalid command. If you need help, type 'commands'.")
 
