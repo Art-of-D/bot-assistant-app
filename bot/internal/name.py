@@ -15,8 +15,7 @@ class Name(Field):
     @input_error
     def __init__(self, name: str):
         validated_name = self.validate_name(name)
-        super().__init__(validated_name)
-        self.value = validated_name
+        super().__init__(validated_name)      
 
     def validate_name(self, value: str) -> str:
         """

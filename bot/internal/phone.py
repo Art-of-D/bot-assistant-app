@@ -15,8 +15,7 @@ class Phone(Field):
     """
     def __init__(self, number: str):
         validated_number = self.validate_phone(number)
-        super().__init__(validated_number)
-        self.value = validated_number
+        super().__init__(validated_number)      
 
     @input_error
     def validate_phone(self, number: str) -> str:

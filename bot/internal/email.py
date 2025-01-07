@@ -15,7 +15,7 @@ class Email(Field):
     def __init__(self, email: str):
         validated_email = self.validate_email(email)
         super().__init__(validated_email)
-        self.value = validated_email
+        
 
     @input_error
     def validate_email(self, email: str) -> str:
