@@ -67,9 +67,11 @@ bot/
 │ │ ├── filer.py
 │ ├── internal/ # for all classes
 │ │ ├── **init**.py
-│ │ ├── name.py
+│ │ ├── manager.py # to manage commands
 │ │ ├── phone.py
 │ │ ├── birthday.py
+│ │ ├── name.py
+│ │ ├── ...
 │ ├── decorators/ # for all decorators
 │ │ ├── errorhandler.py
 │ ├── **init**.py
