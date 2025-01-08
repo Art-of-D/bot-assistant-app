@@ -1,15 +1,53 @@
-#from bot.internal.record import Record
+from bot.handler.contacts_handler import contacts_handler
+from bot.handler.notes_handler import notes_handler
+from bot.handler.birthdays_handler import birthdays_handler
 from bot.filer.filer import load_contacts, record_contacts
+from bot.utilities.parser import parse_input
 
-def parse_input(user_input):
-    if not user_input:
-        print("Please enter a command.")
-        return "commands", []
-    else: 
-        cmd, *args = user_input.split()
-        cmd = cmd.strip().lower()
-        return cmd, *args
+def show_main_menu():
+    print("""
+Available main commands:
+1. Contacts - Manage contacts
+2. Notes - Manage notes
+3. Birthdays - Manage birthdays
+4. Help - Show commands
+5. Exit - Exit the assistant
+    """)
 
+
+def show_contacts_menu():
+    print("""
+Contacts commands:
+- To add a new contact - add <Contact name>
+- To add email, phone, or address - add <Contact name> email <email> | phone <phone> | address <address>
+- To change contact info - change <Contact name> email <email> | phone <phone> | address <address>
+- To delete a contact - delete <Contact name>
+- To remove a phone number - remove <Contact name> phone <phone> | email <email> | address <address>
+- To find a contact - find <Contact name> | phone <phone> | email <email> | address <address>
+- To show all contacts - show
+    """)
+
+
+def show_notes_menu():
+    print("""
+Notes commands:
+- To add a new note - note
+- To add tag - tag <title> <tag>
+- To show a specific note - show <title>
+- To show a list of notes by tag - display <tag>
+- To edit a note - edit <title> <note>
+- To delete a note - detete <title>
+- To show all notes - notes
+- To show all tags - tags
+    """)
+
+
+def show_birthdays_menu():
+    print("""
+Birthdays commands:
+- To show a contact's birthday - show-birthday <Contact name>
+- To show all upcoming birthdays for the week - birthdays
+    """)
 
 def main():
     print("Welcome to the assistant bot!")
@@ -19,71 +57,38 @@ def main():
         user_input = input("Enter a command: ")
         command, *args = parse_input(user_input)
 
-        if command in ["close", "exit"]:
-            print("Good bye!")
+        if command in ["exit", "close", "4"]:
             record_contacts(manager)
+            print("Goodbye!")
             break
-        elif command == "hello":
-            print("How can I help you?")
-        elif command == "add":
-            print("adding new contact")
-            # new_contact = Record(args[0])
-            # if len(args) > 1: 
-            #     print(new_contact.add_phone(args[1]))
 
-            # print(manager.add_record(new_contact))
-        elif command == "change":
-            print("change contact")
-            # print(manager.edit_phone(args[0], args[1]))
-        elif command == "delete":
-            print("delete contact")
-            # print(manager.delete(args[1]))
-        elif command == "remove":
-            print("delete phone")
-            # print(manager.delete_phone(args[0], args[1]))
-        elif command == "all":
-            print("all contacts")
-            # print(manager.list_contacts())
-        elif command == "find":
-            print("find contact")
-            # print(manager.find(args[0]))
-        elif command == "add-birthday":
-            print("add birthday")
-            # print(manager.add_birthday(args[0], args[1]))
-        elif command == "show-birthday":
-            print("show birthday")
-            # print(manager.show_birthday(args[0]))
-        elif command == "birthdays":
-            print("show all birthdays")
-            # print(manager.birthdays())
-        elif command == "note":
-            print("add note")
-            # print(manager.add_note(args[0], args[1]))
-        elif command == "show-note":
-            print("show note")
-            # print(manager.get_note(args[0]))
-        elif command == "edit-note":
-            print("edit note")
-            # print(manager.edit_note(args[0], args[1]))
-        elif command == "edit-tag":
-            print("edit tag")
-            # print(manager.edit_tag(args[0], args[1]))
-        elif command == "delete-note":
-            print("delete note")
-            # print(manager.delete_note(args[0]))
-        elif command == "notes":
-            print("show all notes")
-            # print(manager.get_all_notes())
-        elif command == "delete-tag":
-            print("delete tag")
-            # print(manager.delete_tag(args[0], args[1]))
-        elif command == "tags":
-            print("show all tags")
-            # print(manager.get_all_tags())
-        elif command == "commands":
-            print("Available commands:\n-hello - greetings\n-add - add new contact or new info for the contact\n-change - change contact info\n-delete - delete contact\n-remove - delete phone\n-all - show all contacts\n-find - find contact by name phone, email, address\n-show-birthday - show birthday of some contact\n-birthdays - show all birthdays on the week for your contacts\n-note - to add new note\n-show-note - to show note\n-edit-note - to edit note\n-edit-tag - to edit tag\n-delete-note - delete note\n-notes - to show all notes\n-tags - show all tags\n-close OR exit")
+        elif command in ["commands", "menu", "help" "0"]:
+            show_main_menu()
+
+        elif command in ["contacts", "1"]:
+            show_contacts_menu()
+            sub_input = input("Enter a contact command: ")
+            sub_command, *s_args = parse_input(sub_input)
+
+            contacts_handler(sub_command, s_args, manager)
+        elif command in ["notes", "2"]:
+            show_notes_menu()
+            sub_input = input("Enter a notes command: ")
+            sub_command, *s_args = parse_input(sub_input)
+
+            notes_handler(sub_command, s_args, manager)
+
+        elif command in ["birthdays", "3"]:
+            show_birthdays_menu()
+            sub_input = input("Enter a birthday command: ")
+            sub_command, *s_args = parse_input(sub_input)
+        
+            birthdays_handler(sub_command, s_args, manager)
+
+        elif command == "hello":
+            print("Hello! How can I help you today?")
         else:
-            print("Invalid command. If you need help, type 'commands'.")
+            print("Invalid main command. Please try again.")
 
 if __name__ == "__main__":
     main()

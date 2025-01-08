@@ -2,7 +2,7 @@ import copy
 from collections import UserDict
 from bot.internal.note.note import Note
 from bot.internal.note.tag import Tag
-from bot.decorators.errorhandler import input_error
+from bot.decorators.error_handler import input_error
 
 #It will use tag as a key to access notes and manage them
 class Notes(UserDict):

@@ -5,11 +5,11 @@ def load_contacts(filepath="./bot/storage/data.pkl"):
     manager = Manager()
     try:
         with open(filepath, "rb") as file:
-            print("Loading contacts...")
-            contacts = pickle.load(file)
-            if not isinstance(contacts, Manager):
+            print("Loading data...")
+            data = pickle.load(file)
+            if not isinstance(data, Manager):
                 raise ValueError("Loaded data is not of type AddressBook.")
-            return contacts
+            return data
     except FileNotFoundError:
         print("No contacts found. Please add new contact.")
         return manager
@@ -18,11 +18,11 @@ def load_contacts(filepath="./bot/storage/data.pkl"):
         return manager
 
 
-def record_contacts(contacts, filepath="./bot/storage/data.pkl"):
+def record_contacts(data, filepath="./bot/storage/data.pkl"):
     try:
         with open(filepath, "wb") as file:
             print("Saving contacts...")
-            pickle.dump(contacts, file)
+            pickle.dump(data, file)
             print("Contacts saved successfully.")
     except Exception as e:
         print(f"Error saving contacts: {e}")
