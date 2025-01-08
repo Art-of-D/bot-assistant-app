@@ -1,6 +1,5 @@
-from bot.decorators.errorhandler import input_error
+from bot.decorators.error_handler import input_error
 from bot.internal.field import Field
-
 
 class Tag(Field):
     def __init__(self, tag_value):
