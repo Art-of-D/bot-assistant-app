@@ -35,6 +35,23 @@ class Record(Field):
         self.birthday: Optional[Birthday] = None
         self.address: Optional[Address] = None
 
+    def __getstate__(self):
+        """
+        Prepares the object's state for serialization.
+        Returns:
+        dict: The state of the object.
+        """
+        state = self.__dict__.copy()
+        return state
+
+    def __setstate__(self, state):
+        """
+        Restores the object's state from serialized data.
+        Args:
+        state (dict): The serialized state of the object.
+        """
+        self.__dict__.update(state)
+
     def add_phone(self, phone: str) -> None:
         """
         Adds a phone number to the contact.
