@@ -4,10 +4,10 @@ def contacts_handler(command, args, manager):
     if command not in ["add", "change", "delete", "remove", "all", "find"]:
             print("Please provide a command and arguments.")
             return
-    
+
     if command != "all":
-        normalized_arg = args[0].casefold() if command != "all" else None
-        check_data = normalized_arg in manager.data.keys()
+        normalized_arg = args[0].casefold()
+        check_data = any(normalized_arg == key.casefold() for key in manager.data.keys())
 
     if command == "add":
         if len(args) == 1 and not check_data:
