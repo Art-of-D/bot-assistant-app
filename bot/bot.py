@@ -20,11 +20,11 @@ def show_contacts_menu():
 Contacts commands:
 - To add a new contact - add <Contact name>
 - To add email, phone, or address - add <Contact name> email <email> | phone <phone> | address <address>
-- To change contact info - change <Contact name> email <email> | phone <phone> | address <address>
+- To change contact info - change <Contact name> email <old_email> <new_email>| phone <old_phone> <new_phone> | address <address>
 - To delete a contact - delete <Contact name>
 - To remove a phone number - remove <Contact name> phone <phone> | email <email> | address <address>
 - To find a contact - find <Contact name> | phone <phone> | email <email> | address <address>
-- To show all contacts - show
+- To show all contacts - all
     """)
 
 
@@ -54,6 +54,7 @@ def main():
     manager = load_contacts()
     
     while True:
+        show_main_menu()
         user_input = input("Enter a command: ")
         command, *args = parse_input(user_input)
 
@@ -68,20 +69,20 @@ def main():
         elif command in ["contacts", "1"]:
             show_contacts_menu()
             sub_input = input("Enter a contact command: ")
-            sub_command, *s_args = parse_input(sub_input)
+            sub_command, s_args = parse_input(sub_input)
 
             contacts_handler(sub_command, s_args, manager)
         elif command in ["notes", "2"]:
             show_notes_menu()
             sub_input = input("Enter a notes command: ")
-            sub_command, *s_args = parse_input(sub_input)
+            sub_command, s_args = parse_input(sub_input)
 
             notes_handler(sub_command, s_args, manager)
 
         elif command in ["birthdays", "3"]:
             show_birthdays_menu()
             sub_input = input("Enter a birthday command: ")
-            sub_command, *s_args = parse_input(sub_input)
+            sub_command, s_args = parse_input(sub_input)
         
             birthdays_handler(sub_command, s_args, manager)
 

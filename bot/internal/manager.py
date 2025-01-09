@@ -17,7 +17,7 @@ class Manager(UserDict):
 
     @input_error
     def add_record(self, name):
-        new_record = Record(name)    
+        new_record = Record(name.casefold())    
         self.data[name] = new_record
         return f"Contact '{name}' added successfully."
     
@@ -31,9 +31,8 @@ class Manager(UserDict):
     @input_error
     def add_email(self, name, email):        
         try:
-            new_email = Email(email)
             record = self.data[name]
-            record.add_email(new_email)
+            record.add_email(email)
             return f"Email for '{name}' added successfully."
         except ValueError as e:
             raise ValueError(f"Error adding email to '{name}': {e}")
@@ -41,9 +40,8 @@ class Manager(UserDict):
     @input_error
     def add_phone(self, name, phone):
         try:
-            new_phone = Phone(phone)
             record = self.data[name]
-            record.add_phone(new_phone)            
+            record.add_phone(phone)            
             return f"Phone for '{name}' added successfully."
         except ValueError as e:
             raise ValueError(f"Error adding phone to '{name}': {e}")
@@ -51,9 +49,8 @@ class Manager(UserDict):
     @input_error
     def add_address(self, name, address):
         try:
-            new_address = Address(address)
             record = self.data[name]
-            record.add_address(new_address)            
+            record.add_address(address)            
             return f"Address for '{name}' added successfully."
         except ValueError as e:
             raise ValueError(f"Error adding address to '{name}': {e}")
@@ -61,9 +58,8 @@ class Manager(UserDict):
     @input_error
     def add_birthday(self, name, birthday):
         try:
-            new_birthday = Birthday(birthday)
             record = self.data[name]
-            record.add_birthday(new_birthday)            
+            record.add_birthday(birthday)            
             return f"Birthday for '{name}' added successfully."
         except ValueError as e:
             raise ValueError(f"Error adding birthdate to '{name}': {e}")    
@@ -71,36 +67,32 @@ class Manager(UserDict):
     @input_error
     def change_email(self, name, old_email, new_email):
         try:
-            email_to_save = Email(new_email)
             record = self.data[name]
-            record.edit_email(old_email, email_to_save)
+            record.edit_email(old_email, new_email)
         except ValueError as e:
             raise ValueError(f"Error changing email for '{name}': {e}")
     
     @input_error
     def change_phone(self, name, old_phone, new_phone):
         try:
-            phone_to_save = Phone(new_phone)
             record = self.data[name]
-            record.edit_phone(old_phone, phone_to_save)
+            record.edit_phone(old_phone, new_phone)
         except ValueError as e:
             raise ValueError(f"Error changing phone for '{name}': {e}")
     
     @input_error
     def change_address(self, name, address):
         try:
-            new_address = Phone(address)
             record = self.data[name]
-            record.edit_address(new_address)
+            record.edit_address(address)
         except ValueError as e:
             raise ValueError(f"Error changing address for '{name}': {e}")
     
     @input_error
     def change_birthday(self, name, birthday):
         try:
-            new_birthday = Phone(birthday)
             record = self.data[name]
-            record.edit_birthday(new_birthday)
+            record.edit_birthday(birthday)
         except ValueError as e:
             raise ValueError(f"Error changing birthday for '{name}': {e}")
     
@@ -121,18 +113,18 @@ class Manager(UserDict):
             raise ValueError(f"Error removing email from '{name}': {e}")
     
     @input_error
-    def remove_address(self, name, address):
+    def remove_address(self, name):
         try:
             record = self.data[name]
-            record.remove_address(address)
+            record.remove_address()
         except ValueError as e:
             raise ValueError(f"Error removing address from '{name}': {e}")
     
     @input_error
-    def remove_birthday(self, name, birthday):
+    def remove_birthday(self, name):
         try:
             record = self.data[name]
-            record.remove_birthday(birthday)
+            record.remove_birthday()
         except ValueError as e:
             raise ValueError(f"Error removing birthday from '{name}': {e}")
     
