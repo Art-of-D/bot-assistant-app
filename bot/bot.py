@@ -19,8 +19,8 @@ def show_contacts_menu():
     print("""
 Contacts commands:
 - To add a new contact - add <Contact name>
-- To add email, phone, or address - add <Contact name> email <email> | phone <phone> | address <address>
-- To change contact info - change <Contact name> email <old_email> <new_email>| phone <old_phone> <new_phone> | address <address>
+- To add email, phone, or address - add <Contact name> email <email> | phone <phone> | address <address> | birthday <birthday>
+- To change contact info - change <Contact name> email <old_email> <new_email>| phone <old_phone> <new_phone> | address <address> | birthday <birthday>
 - To delete a contact - delete <Contact name>
 - To remove a phone number - remove <Contact name> phone <phone> | email <email> | address <address>
 - To find a contact - find <Contact name> | phone <phone> | email <email> | address <address>
@@ -52,34 +52,34 @@ Birthdays commands:
 def main():
     print("Welcome to the assistant bot!")
     manager = load_contacts()
-    
+    show_commands = True
     while True:
-        show_main_menu()
+        show_main_menu() if show_commands else None
         user_input = input("Enter a command: ")
         command, *args = parse_input(user_input)
 
-        if command in ["exit", "close", "4"]:
+        if command in ["exit", "close", "e", "4"]:
             record_contacts(manager)
             print("Goodbye!")
             break
 
         elif command in ["commands", "menu", "help" "0"]:
-            show_main_menu()
+            show_commands = True
 
-        elif command in ["contacts", "1"]:
+        elif command in ["contacts", "c", "1"]:
             show_contacts_menu()
             sub_input = input("Enter a contact command: ")
             sub_command, s_args = parse_input(sub_input)
 
             contacts_handler(sub_command, s_args, manager)
-        elif command in ["notes", "2"]:
+        elif command in ["notes", "n", "2"]:
             show_notes_menu()
             sub_input = input("Enter a notes command: ")
             sub_command, s_args = parse_input(sub_input)
 
             notes_handler(sub_command, s_args, manager)
 
-        elif command in ["birthdays", "3"]:
+        elif command in ["birthdays", "b", "3"]:
             show_birthdays_menu()
             sub_input = input("Enter a birthday command: ")
             sub_command, s_args = parse_input(sub_input)
