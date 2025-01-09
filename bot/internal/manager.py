@@ -17,9 +17,13 @@ class Manager(UserDict):
 
     @input_error
     def add_record(self, name):
-        new_record = Record(name.casefold())    
-        self.data[name] = new_record
-        return f"Contact '{name}' added successfully."
+        if name not in self.data:
+            new_record = Record(name.casefold())    
+            self.data[name] = new_record
+            return f"Contact '{name}' added successfully."
+        else:
+            return(f"Record already exists in the address book.")
+            
     
     @input_error
     def delete(self, name):
@@ -39,9 +43,12 @@ class Manager(UserDict):
         
     @input_error
     def add_phone(self, name, phone):
+        print(name)
+        print(phone)
         try:
             record = self.data[name]
-            record.add_phone(phone)            
+            record.add_phone(phone)     
+            print(record)       
             return f"Phone for '{name}' added successfully."
         except ValueError as e:
             raise ValueError(f"Error adding phone to '{name}': {e}")
@@ -129,13 +136,30 @@ class Manager(UserDict):
             raise ValueError(f"Error removing birthday from '{name}': {e}")
     
     def find_contact(self, keyword):
-        results = [record for name, record in self.data.items() if keyword.lower() in name.lower()]
-        return results if results else f"No contacts found for keyword '{keyword}'."
+        keyword_lower = keyword.lower()
+        results = []
+        for name, record in self.data.items():
+            if (keyword_lower in name.lower() or (getattr(record, 'phone', '') and keyword_lower in str(record.phone).lower()) or (getattr(record, 'email', '') and keyword_lower in str(record.email).lower()) or (getattr(record, 'address', '') and keyword_lower in str(record.address).lower())):
+                results.append(f"Name: {name}, Phone: {getattr(record, 'phone', 'N/A')}, Email: {getattr(record, 'email', 'N/A')}, Address: {getattr(record, 'address', 'N/A')}")
+    
+        return "\n".join(results) if results else f"No contacts found for keyword '{keyword}'."
     
     def list_contacts(self):
         if not self.data:
             return "No contacts available."
-        return "\n".join(f"{name}: {record}" for name, record in self.data.items())
+        contacts_list = []
+        for name, record in self.data.items():
+            details = [f"Name: {name}"]
+            if getattr(record, 'email', None):
+                details.append(f"Email: {record.email}")
+            if getattr(record, 'phone', None):
+                details.append(f"Phone: {record.phone}")
+            if getattr(record, 'address', None):
+                details.append(f"Address: {record.address}")
+            if getattr(record, 'birthday', None):
+                details.append(f"Birthday: {record.birthday}")
+            contacts_list.append(", ".join(details))
+        return "\n".join(contacts_list)
         
     def show_birthday(self, name):
         record = self.data[name]
