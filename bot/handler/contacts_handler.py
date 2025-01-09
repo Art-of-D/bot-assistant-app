@@ -1,42 +1,42 @@
 from bot.internal.record import Record
 
 def contacts_handler(command, args, manager):
-    if len(args) == 0:
+    if command not in ["add", "change", "delete", "remove", "all", "find"]:
             print("Please provide a command and arguments.")
             return
     if command == "add":
-        if len(args) == 1 and args[0] not in manager.data:
-           new_contact = Record(args[0])
+        normalized_arg = args[0].casefold()
+        check_data = manager.find_contact(normalized_arg)
+        if len(args) == 1 and not check_data:
            print("Adding new contact...")
-           print(manager.add_record(new_contact))
-        elif len(args) > 1 and args[0] not in manager.data:
-            contact_subaction_handler(manager, command, args[0], args[1:])
+           print(manager.add_record(args[0]))
+        elif len(args) > 1 and check_data:
+            print("Adding email, phone, or address to contact", command, args)
+            contact_subaction_handler(manager, command, contact=args[0], action=args[1], new_info=args[2])
         else:
-            print("Please provide a valid command")
+            print("Please provide a valid add command")
         return
     elif command == "change":
         if args[0] not in manager.data:
             print("Please create a contact before changing.")
             return
-        contact_subaction_handler(manager, command, args[0], args[1:])
+        contact_subaction_handler(manager, command, contact=args[0], action=args[1], old_info=args[2], new_info=args[3]) if len(args) == 4 else contact_subaction_handler(manager, command, contact=args[0], action=args[1], new_info=args[2])
         return
     elif command == "delete":
         print("Deleting contact...")
         print(manager.delete(args[0]))
     elif command == "remove":
-        print("Removing phone number...")
-        contact_subaction_handler(manager,command, args[0], args[1:])
+        contact_subaction_handler(manager,command, action=args[1], contact=args[0], old_info=args[2]) if len(args) == 3 else contact_subaction_handler(manager, command, action=args[1], contact=args[0])
         return
     elif command == "all":
-        print("Showing all contacts...")
         print(manager.list_contacts())
         return
     elif command == "find":
         print("Finding contact...")
-        contact_subaction_handler(manager, command, args[0], args[1:])
+        print(manager.find_contact(args[0]))
         return
 
-def contact_subaction_handler(manager, action, command, args):
+def contact_subaction_handler(manager, command, action, contact=None, new_info=None, old_info=None):
     action_map = {
         "add": {
             "email": manager.add_email,
@@ -55,19 +55,21 @@ def contact_subaction_handler(manager, action, command, args):
             "email": manager.remove_email,
             "address": manager.remove_address,
             "birthday": manager.remove_birthday,
-        },
-        "find": {
-            "phone": manager.find_phone,
-            "email": manager.find_email,
-            "address": manager.find_address,
-            "birthday": manager.find_birthday,
-        },
+        }
     }
-
     try:
-        if action in action_map and command in action_map[action]:
-            print(f"{action.capitalize()}ing {command}...")
-            print(action_map[action][command](*args))
+        multiple_lists = ["phone", "email"]
+        if command in action_map and action in action_map[command]:
+            print(f"Try to {command.capitalize()} {action}...")
+            if command == "remove" and action in multiple_lists:
+                print(action_map[command][action](contact, old_info))
+            elif command == "remove":
+                print(action_map[command][action](contact))
+            elif command == "change" and action in multiple_lists:
+                print(action_map[command][action](contact, old_info, new_info))
+            else:
+                print(action, contact, new_info)
+                print(action_map[command][action](contact, new_info))
         else:
             print(f"Invalid action or command: {action} {command}")
     except TypeError:

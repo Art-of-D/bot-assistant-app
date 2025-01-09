@@ -7,9 +7,8 @@ from bot.internal.name import Name
 from bot.internal.phone import Phone
 from bot.internal.birthday import Birthday
 from bot.internal.address import Address
-from bot.internal.field import Field
 
-class Record(Field):
+class Record():
     """
     Class to represent a record in the address book.
 
@@ -28,7 +27,6 @@ class Record(Field):
         Args:
             name (str): The name of the contact.
         """
-        super().__init__(name) 
         self.name = Name(name)
         self.phones: List[Phone] = []
         self.emails: List[Email] = []

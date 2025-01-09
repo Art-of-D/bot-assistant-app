@@ -12,11 +12,11 @@ class Name(Field):
 
     Validates and stores a properly formatted name.
     """
-    @input_error
     def __init__(self, name: str):
         validated_name = self.validate_name(name)
         super().__init__(validated_name)      
 
+    @input_error
     def validate_name(self, value: str) -> str:
         """
         Validate the name to ensure it meets the criteria.
