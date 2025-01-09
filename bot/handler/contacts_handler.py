@@ -4,20 +4,23 @@ def contacts_handler(command, args, manager):
     if command not in ["add", "change", "delete", "remove", "all", "find"]:
             print("Please provide a command and arguments.")
             return
+    
+    if command != "all":
+        normalized_arg = args[0].casefold() if command != "all" else None
+        check_data = normalized_arg in manager.data.keys()
+
     if command == "add":
-        normalized_arg = args[0].casefold()
-        check_data = manager.find_contact(normalized_arg)
         if len(args) == 1 and not check_data:
            print("Adding new contact...")
            print(manager.add_record(args[0]))
         elif len(args) > 1 and check_data:
-            print("Adding email, phone, or address to contact", command, args)
+            print("Adding email, phone, or address to contact")
             contact_subaction_handler(manager, command, contact=args[0], action=args[1], new_info=args[2])
         else:
             print("Please provide a valid add command")
         return
     elif command == "change":
-        if args[0] not in manager.data:
+        if not check_data:
             print("Please create a contact before changing.")
             return
         contact_subaction_handler(manager, command, contact=args[0], action=args[1], old_info=args[2], new_info=args[3]) if len(args) == 4 else contact_subaction_handler(manager, command, contact=args[0], action=args[1], new_info=args[2])
