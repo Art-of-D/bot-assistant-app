@@ -28,3 +28,6 @@ class Tag(Field):
         if not new_value.strip():
             raise ValueError("New tag cannot be empty or just whitespace.")
         self.value = new_value
+
+    def get_tag(self):
+        return self.value

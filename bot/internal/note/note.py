@@ -1,42 +1,76 @@
-import uuid
-
 from bot.decorators.error_handler import input_error
 from bot.internal.field import Field
 from bot.internal.note.tag import Tag
 
-class Note(Field):
-    def __init__(self, title_value=None, tag_value=None):
-        # Title is mandatory; if not provided, generate it automatically
-        if title_value is None:
-            # Generate a unique title using UUID if no title is provided
-            title_value = f"Note-{str(uuid.uuid4())[:8]}"  # First 8 characters of UUID
 
-        if not isinstance(title_value, str) or not title_value.strip():
+class Note(Field):
+    MAX_TAGS = 10  # Максимальна кількість тегів
+
+    def __init__(self, title_value, tags=None):
+        # Title є обов'язковим
+        if not title_value or not isinstance(title_value, str) or not title_value.strip():
             raise ValueError("Title must be a non-empty string.")
         
-        # If Tag is provided, validate it; otherwise, set it as None
-        if tag_value is not None:
-            self.tag = Tag(tag_value)
+        # Теги є опціональними. Перевіряємо, чи це список.
+        if tags is None:
+            self.tags = []
+        elif isinstance(tags, list) and all(isinstance(tag, str) and tag.strip() for tag in tags):
+            self.tags = [Tag(tag.strip()) for tag in tags]
+            if len(self.tags) > self.MAX_TAGS:
+                raise ValueError(f"Cannot have more than {self.MAX_TAGS} tags.")
         else:
-            self.tag = None
-        
-        # Initialize the Field parent class with the title as value
+            raise ValueError("Tags must be a list of non-empty strings.")
+
+        # Ініціалізація базового класу Field
         super().__init__(title_value)
 
     def __str__(self):
-        # Return the string representation of the Note, include Tag if it exists
-        tag_str = f", Tag: {self.tag.value}" if self.tag else ""
-        return f"Note: {self.value}{tag_str}"
-    
+        # Повертає рядкове представлення Note, включаючи всі теги (якщо є)
+        tags_str = ", ".join(tag.value for tag in self.tags) if self.tags else "No tags"
+        return f"Note: {self.value}, Tags: [{tags_str}]"
+
     @input_error
     def validate(self):
-        # Validate title length (max 200 characters)
+        # Валідація довжини Title (максимум 200 символів)
         if len(self.value) > 200:
             raise ValueError("Title cannot exceed 200 characters.")
-    
+        # Валідація кількості тегів
+        if len(self.tags) > self.MAX_TAGS:
+            raise ValueError(f"Cannot have more than {self.MAX_TAGS} tags.")
+
     @input_error
     def edit(self, new_title):
-        # Validate and set the new title value
-        if not isinstance(new_title, str) or not new_title.strip():
+        # Змінити Title з перевіркою
+        if not new_title or not isinstance(new_title, str) or not new_title.strip():
             raise ValueError("New title must be a non-empty string.")
-        self.value = new_title  # Update the value of the title
+        self.value = new_title  # Оновлення значення Title
+
+    @input_error
+    def add_tag(self, new_tag):
+        # Додати новий тег
+        if not new_tag or not isinstance(new_tag, str) or not new_tag.strip():
+            raise ValueError("Tag must be a non-empty string.")
+        if len(self.tags) >= self.MAX_TAGS:
+            raise ValueError(f"Cannot add more than {self.MAX_TAGS} tags.")
+        if any(tag.value == new_tag.strip() for tag in self.tags):
+            raise ValueError("Tag already exists.")
+        self.tags.append(Tag(new_tag.strip()))
+
+    @input_error
+    def remove_tag(self, tag_to_remove):
+        # Видалити тег
+        if not tag_to_remove or not isinstance(tag_to_remove, str) or not tag_to_remove.strip():
+            raise ValueError("Tag to remove must be a non-empty string.")
+        for tag in self.tags:
+            if tag.value == tag_to_remove.strip():
+                self.tags.remove(tag)
+                return
+        raise ValueError("Tag not found.")
+
+    def get_tags(self):
+        # Повернути список тегів
+        return [tag.value for tag in self.tags]
+
+    def get_note(self):
+        # Повертає значення Title
+        return self.value
