@@ -143,9 +143,7 @@ class Record():
         Args:
             birthday (str): The birthday to add.
         """
-        print(birthday)
         self.birthday = Birthday(birthday)
-        print(self.birthday)
 
     def remove_birthday(self) -> None:
         """
