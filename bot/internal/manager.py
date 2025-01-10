@@ -2,10 +2,6 @@ import copy
 from collections import UserDict
 from bot.decorators.error_handler import input_error
 from bot.internal.record import Record
-from bot.internal.email import Email
-from bot.internal.phone import Phone
-from bot.internal.address import Address
-from bot.internal.birthday import Birthday
 from bot.utilities.upcoming_birthday import get_upcoming_birthdays
 
 class Manager(UserDict):
@@ -181,7 +177,8 @@ class Manager(UserDict):
         records = self.data.items()
         upcoming_birthdays = get_upcoming_birthdays(records, days_ahead)
         if upcoming_birthdays:
-            return "Upcoming birthdays: " + ", ".join(upcoming_birthdays)
+            return ("Upcoming birthdays:\n ""\n".join(
+            f"{entry['name']}, birthday: {entry['birthday_date']}" for entry in upcoming_birthdays))
         return "No upcoming birthdays."
 
 

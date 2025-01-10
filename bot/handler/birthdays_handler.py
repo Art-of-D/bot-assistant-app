@@ -4,4 +4,4 @@ def birthdays_handler(command, args, manager):
         print(manager.show_birthday(args[0]))
     elif command == "birthdays":
         print("Showing upcoming birthdays...")
-        print(manager.birthdays())
+        print(manager.show_upcoming_birthdays(args[0]))

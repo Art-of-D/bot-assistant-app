@@ -71,9 +71,8 @@ def contact_subaction_handler(manager, command, action, contact=None, new_info=N
             elif command == "change" and action in multiple_lists:
                 print(action_map[command][action](contact, old_info, new_info))
             else:
-                print(action, contact, new_info)
                 print(action_map[command][action](contact, new_info))
         else:
             print(f"Invalid action or command: {action} {command}")
-    except TypeError:
-        print("Invalid arguments provided.")
+    except (TypeError, ValueError) as e:
+        print(f"Invalid arguments provided. {e}")
