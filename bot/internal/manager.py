@@ -34,7 +34,7 @@ class Manager(UserDict):
 
     @input_error
     def add_email(self, name, email):        
-        try:
+        try:            
             record = self.data[name]
             record.add_email(email)
             return f"Email for '{name}' added successfully."
@@ -42,13 +42,10 @@ class Manager(UserDict):
             raise ValueError(f"Error adding email to '{name}': {e}")
         
     @input_error
-    def add_phone(self, name, phone):
-        print(name)
-        print(phone)
+    def add_phone(self, name, phone):        
         try:
             record = self.data[name]
-            record.add_phone(phone)     
-            print(record)       
+            record.add_phone(phone)                   
             return f"Phone for '{name}' added successfully."
         except ValueError as e:
             raise ValueError(f"Error adding phone to '{name}': {e}")
@@ -76,22 +73,26 @@ class Manager(UserDict):
         try:
             record = self.data[name]
             record.edit_email(old_email, new_email)
+            return f"Email for '{name}' changed successfully."
         except ValueError as e:
             raise ValueError(f"Error changing email for '{name}': {e}")
     
     @input_error
-    def change_phone(self, name, old_phone, new_phone):
+    def change_phone(self, name, old_phone, new_phone):        
         try:
             record = self.data[name]
             record.edit_phone(old_phone, new_phone)
+            return f"Phone for '{name}' changed successfully."
         except ValueError as e:
             raise ValueError(f"Error changing phone for '{name}': {e}")
+       
     
     @input_error
     def change_address(self, name, address):
         try:
             record = self.data[name]
             record.edit_address(address)
+            return f"Address for '{name}' changed successfully."
         except ValueError as e:
             raise ValueError(f"Error changing address for '{name}': {e}")
     
@@ -100,6 +101,7 @@ class Manager(UserDict):
         try:
             record = self.data[name]
             record.edit_birthday(birthday)
+            return f"Birthday for '{name}' changed successfully."
         except ValueError as e:
             raise ValueError(f"Error changing birthday for '{name}': {e}")
     
@@ -108,6 +110,7 @@ class Manager(UserDict):
         try:
             record = self.data[name]
             record.remove_phone(phone)
+            return f"Phone for '{name}' removed successfully."
         except ValueError as e:
             raise ValueError(f"Error removing phone from '{name}': {e}")
     
@@ -116,6 +119,7 @@ class Manager(UserDict):
         try:
             record = self.data[name]
             record.remove_email(email)
+            return f"Email for '{name}' removed successfully."
         except ValueError as e:
             raise ValueError(f"Error removing email from '{name}': {e}")
     
@@ -124,6 +128,7 @@ class Manager(UserDict):
         try:
             record = self.data[name]
             record.remove_address()
+            return f"Address for '{name}' removed successfully."
         except ValueError as e:
             raise ValueError(f"Error removing address from '{name}': {e}")
     
@@ -132,6 +137,7 @@ class Manager(UserDict):
         try:
             record = self.data[name]
             record.remove_birthday()
+            return f"Birthday for '{name}' removed successfully."
         except ValueError as e:
             raise ValueError(f"Error removing birthday from '{name}': {e}")
     
@@ -139,26 +145,30 @@ class Manager(UserDict):
         keyword_lower = keyword.lower()
         results = []
         for name, record in self.data.items():
-            if (keyword_lower in name.lower() or (getattr(record, 'phone', '') and keyword_lower in str(record.phone).lower()) or (getattr(record, 'email', '') and keyword_lower in str(record.email).lower()) or (getattr(record, 'address', '') and keyword_lower in str(record.address).lower())):
-                results.append(f"Name: {name}, Phone: {getattr(record, 'phone', 'N/A')}, Email: {getattr(record, 'email', 'N/A')}, Address: {getattr(record, 'address', 'N/A')}")
-    
+            phones = ", ".join(str(phone) for phone in record.phones) if record.phones else "N/A"
+            emails = ", ".join(str(email) for email in record.emails) if record.emails else "N/A"
+            birthday = str(record.birthday) if record.birthday else "N/A"
+            if (keyword_lower in name.lower() or 
+                any(keyword_lower in str(phone).lower() for phone in record.phones) or 
+                any(keyword_lower in str(email).lower() for email in record.emails) or 
+                (getattr(record, 'address', '') and keyword_lower in str(record.address).lower())):
+                results.append(f"Name: {name}, Phone: {phones}, Email: {emails}, Address: {getattr(record, 'address', 'N/A')} Birthday: {birthday}")
         return "\n".join(results) if results else f"No contacts found for keyword '{keyword}'."
+        
     
     def list_contacts(self):
         if not self.data:
             return "No contacts available."
         contacts_list = []
         for name, record in self.data.items():
-            details = [f"Name: {name}"]
-            if getattr(record, 'email', None):
-                details.append(f"Email: {record.email}")
-            if getattr(record, 'phone', None):
-                details.append(f"Phone: {record.phone}")
-            if getattr(record, 'address', None):
-                details.append(f"Address: {record.address}")
-            if getattr(record, 'birthday', None):
-                details.append(f"Birthday: {record.birthday}")
-            contacts_list.append(", ".join(details))
+            phones = ", ".join(str(phone) for phone in record.phones) if record.phones else "N/A"
+            emails = ", ".join(str(email) for email in record.emails) if record.emails else "N/A"
+            address = str(record.address) if record.address else "N/A"
+            birthday = str(record.birthday) if record.birthday else "N/A"
+        
+            details = f"Name: {name}, Phone: {phones}, Email: {emails}, Address: {address}, Birthday: {birthday}"
+            contacts_list.append(details)
+    
         return "\n".join(contacts_list)
         
     def show_birthday(self, name):
