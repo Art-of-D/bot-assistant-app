@@ -10,3 +10,6 @@ class Field:
 
     def __setstate__(self, state):
         self.__dict__.update(state)
+
+    def get_value(self):
+        return self.value

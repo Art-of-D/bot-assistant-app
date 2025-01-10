@@ -9,7 +9,7 @@ def get_upcoming_birthdays(contacts, days_before_birthday) -> list:
 
     today = datetime.today().date()  # Отримуємо поточну дату
 
-    for record in contacts:
+    for key, record in contacts:
         # Перевіряємо, чи є дата народження у контакта
         if not record.get_birthday():
             continue
@@ -28,11 +28,11 @@ def get_upcoming_birthdays(contacts, days_before_birthday) -> list:
         days_difference = (specific_date - today).days
 
         # Перевіряємо, чи день народження у межах зазначеного періоду
-        if 0 <= days_difference <= days_before_birthday:
+        if 0 <= int(days_difference) <= int(days_before_birthday):
             birthdays.append(
                 {
                     'name': record.name.value,  # Ім'я контакта
-                    'birthday_date': specific_date.strftime("%Y.%m.%d")  # Дата дня народження
+                    'birthday_date': specific_date.strftime("%d.%m.%Y")  # Дата дня народження
                 }
             )
 

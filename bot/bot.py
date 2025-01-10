@@ -45,8 +45,8 @@ Notes commands:
 def show_birthdays_menu():
     print("""
 Birthdays commands:
-- To show a contact's birthday - show-birthday <Contact name>
-- To show all upcoming birthdays for the week - birthdays
+1. To show a contact's birthday - show-birthday <Contact name>
+2. To show all upcoming birthdays for the week - birthdays <days-ahead>
     """)
 
 def main():

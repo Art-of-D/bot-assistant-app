@@ -17,7 +17,6 @@ class Email(Field):
         super().__init__(validated_email)
         
 
-    # @input_error
     def validate_email(self, email: str) -> str:
         """
         Validate the email address to ensure it conforms to standard email format.

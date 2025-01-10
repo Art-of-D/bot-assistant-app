@@ -143,7 +143,9 @@ class Record():
         Args:
             birthday (str): The birthday to add.
         """
+        print(birthday)
         self.birthday = Birthday(birthday)
+        print(self.birthday)
 
     def remove_birthday(self) -> None:
         """
@@ -183,3 +185,66 @@ class Record():
             address (str): The new address.
         """
         self.address = Address(address)
+
+    def get_name(self) -> str:
+        """
+        Returns the name of the contact.
+
+        Returns:
+            str: The name of the contact.
+        """        
+        return self.name.get_value()
+    
+    def get_phones(self) -> list:
+        """
+        Returns the phone numbers of the contact.
+
+        Returns:
+            list: The phone numbers of the contact.
+        """
+        if self.phones is None:
+            return []
+        try:
+            return [phone.get_value() for phone in self.phones]
+        except AttributeError:
+            return []
+    
+    def get_emails(self) -> list:
+        """
+        Returns the email addresses of the contact.
+
+        Returns:
+            list: The email addresses of the contact.
+        """
+        try:
+            if self.emails is not None:
+                return [email.get_value() for email in self.emails]
+            else:
+                return []
+        except AttributeError:
+            return []
+    
+    def get_birthday(self) -> Optional[str]:
+        """
+        Returns the birthday of the contact.
+
+        Returns:
+            str or None: The birthday of the contact, or None if not set.
+        """
+        if self.birthday is None:
+            return None
+        return self.birthday.get_birthday()
+    
+    def get_address(self) -> Optional[str]:
+        """
+        Returns the address of the contact.
+
+        Returns:
+            str or None: The address of the contact, or None if not set.
+        """
+        if self.address is None:
+            return None
+        try:
+            return self.address.get_value()
+        except AttributeError:
+            return None
