@@ -2,56 +2,74 @@
 def notes_handler(command, args, notes):
     if command == "note":
         print(adding_note(notes))
+        return
     elif command == "tag":
         if len(args) < 2:
             print("Please provide a title and tag: tag <title> <tag>")
+            return
         title, tag = args[0], args[1]
         print(f"Adding tag '{tag}' to note '{title}'...")
         print(notes.add_tag(title, tag))
+        return
     elif command == "show":
         if len(args) < 1:
             print("Please provide a title: show <title>")
+            return
         title = args[0]
         print(f"Showing note: {title}...")
         print(notes.get_note(title))
+        return
     elif command == "display":
         if len(args) < 1:
             print("Please provide a tag: display <tag>")
+            return
         tag = args[0]
         print(f"Displaying notes with tag '{tag}'...")
         print(notes.display_notes_by_tag(tag))
+        return
     elif command == "edit":
         if len(args) < 2:
             print("Please provide a title and new note content: edit <title> <note>")
+            return
         title, note = args[0], " ".join(args[1:])
         print(f"Editing note '{title}'...")
         print(notes.edit_note(title, note))
+        return
     elif command == "change":
         if len(args) < 2:
             print("Please provide an old title and a new title: change <old_title> <new_title>")
+            return
         old_title, new_title = args[0], args[1]
         print(f"Changing title '{old_title}' to '{new_title}'...")
         print(notes.edit_title(old_title, new_title))
+        return
     elif command == "delete":
         if len(args) < 1:
             print("Please provide a title: delete <title>")
+            return
         title = args[0]
         print(f"Deleting note '{title}'...")
         print(notes.delete_note(title))
+        return
     elif command == "remove":
         if len(args) < 2:
             print("Please provide a title and a tag: remove <title> <tag>")
+            return
         title, tag = args[0], args[1]
         print(f"Removing tag '{tag}' from note '{title}'...")
         print(notes.delete_tag(title, tag))
+        return
     elif command == "notes":
         print("Showing all notes...")
         print(notes.get_all_notes())
+        return
     elif command == "tags":
         print("Showing all tags...")
         print(notes.get_all_tags())
+        return
     else:
         print(f"Invalid command: {command}. Please try again.")
+        return
 
 def adding_note(notes):
     title = input("Enter the title of the note: ").strip()
