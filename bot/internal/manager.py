@@ -190,8 +190,9 @@ class Manager(UserDict):
         records = self.data.items()
         upcoming_birthdays = get_upcoming_birthdays(records, days_ahead)
         if upcoming_birthdays:
-            return ("Upcoming birthdays:\n ""\n".join(
-            f"{entry['name']}, birthday: {entry['birthday_date']}" for entry in upcoming_birthdays))
+            return "Upcoming birthdays:\n" + "\n".join(
+            f"{entry['name']}, birthday: {entry['birthday_date']}" for entry in upcoming_birthdays
+        )
         return "No upcoming birthdays."
 
     @input_error

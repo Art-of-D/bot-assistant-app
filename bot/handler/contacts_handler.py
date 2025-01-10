@@ -8,7 +8,7 @@ def contacts_handler(command, args, manager):
     if command != "all":
         normalized_arg = args[0].casefold()
         check_data = any(normalized_arg == key.casefold() for key in manager.data.keys())
-        return
+
     if command == "add":
         if len(args) == 1 and not check_data:
            print("Adding new contact...")
@@ -20,10 +20,10 @@ def contacts_handler(command, args, manager):
         else:
             print("Please provide a valid add command")
             return
-        return
     elif command == "change":
         if not check_data:
             print("Please create a contact before changing.")
+            return
         contact_subaction_handler(manager, command, contact=args[0], action=args[1], old_info=args[2], new_info=args[3]) if len(args) == 4 else contact_subaction_handler(manager, command, contact=args[0], action=args[1], new_info=args[2])
         return
     elif command == "delete":
