@@ -36,8 +36,8 @@ Notes commands:
 - To show a specific note - show <title>
 - To show a list of notes by tag - display <tag>
 - To edit a note - edit <title> <note>
-- To edit a note title - edit-title <title> <new-title>
-- To edit a tag - edit-tag <tag> <new-tag>
+- To edit a note title - change <title> <new-title>
+- To remove tag - remove <title> <tag>
 - To delete a note - detete <title>
 - To show all notes - notes
 - To show all tags - tags

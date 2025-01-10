@@ -20,12 +20,23 @@ class Notes(UserDict):
         new_note = Note(title)
         new_note.add_note(note)
         if tag:
-            new_tag = Tag(tag)
-            new_note.add_tag(new_tag)
+            new_note.add_tag(tag)
         self.data[title.casefold()] = new_note
         return f"{new_note.get_title()}... was added successfully."
       except (KeyError, TypeError, ValueError, AssertionError) as e:
           raise e
+      
+  def add_tag(self, title, tag):
+      if not title or not tag:
+          raise ValueError("Cannot add empty note or title. Please provide both title and tag, first argument is title, second is tag.")
+
+      try:
+          note = self.data[title.casefold()]
+          note.add_tag(tag)
+          return f"Tag {tag} added to note {title} successfully."
+      except (KeyError, TypeError, ValueError, AssertionError) as e:
+          raise e
+      
 
   @input_error
   def get_note(self, title):
@@ -48,6 +59,19 @@ class Notes(UserDict):
         return f"Note with a {title} deleted successfully."
     except KeyError:
         raise KeyError(f"Note with {title} not found!")
+    
+  @input_error
+  def delete_tag(self, title, tag):
+    if not title or not tag:
+        raise ValueError("Title and tag cannot be empty. Please provide a title and a tag.")
+    try:
+        note = self.data[title.casefold()]
+        note.remove_tag(tag)
+        return f"{tag} deleted successfully from the note with title - {title}."
+    except KeyError:
+        raise KeyError(f"Note with {title} not found!")
+    except ValueError:
+        raise ValueError(f"Tag with {tag} not found in note with title {title}.")
     
   @input_error
   def edit_title(self, old_title, new_title):
@@ -82,28 +106,6 @@ class Notes(UserDict):
       return f"Note with {note.get_title()} edited successfully."
   
   @input_error
-  def edit_tag(self, tag, new_tag):
-    if not tag:
-        raise ValueError("Tag cannot be empty. Please provide a valid tag.")
-
-    try:
-        note = self.get_note(tag)
-    except KeyError as e:
-        raise KeyError(f"Cannot edit tag: {str(e)}")
-
-    if not new_tag:
-        raise ValueError("New tag cannot be empty. Please provide a new tag.")
-
-    try:
-        new_tag = Tag(new_tag)
-    except ValueError as e:
-        raise ValueError(str(e))
-
-    self.delete_note(tag)
-    self.add_note(new_tag, note)
-    return f"Note with tag {tag} edited successfully."
-  
-  @input_error
   def get_all_notes(self):
     if not self.data:
         return "No notes found."
@@ -120,8 +122,35 @@ class Notes(UserDict):
   def get_all_tags(self):
     if not self.data:
         return "No tags found."
-    tags = []
-    for tag, _ in self.data.items():
-        if tag:
-            tags.append(f"- {tag.get_value()}")
-    return "You have the following tags:\n" + "\n".join(tags)
+    unique_tags = set()
+    for note in self.data.values():
+        note_tags = note.get_tags()
+        if note_tags:
+            unique_tags.update(note_tags)
+
+    if not unique_tags:
+        return "No tags found."
+
+    tags = sorted(unique_tags)
+    return "You have the following tags:\n" + "\n".join(f"- {tag}" for tag in tags)
+  
+  @input_error
+  def display_notes_by_tag(self, tag):
+    if not self.data:
+        return "No notes available."
+
+    tag = tag.casefold()
+    matching_notes = []
+
+    for note in self.data.values():
+        note_tags = note.get_tags()
+        if not note_tags:
+            continue
+        if any(tag in note_tag.casefold() for note_tag in note_tags):
+            note_data = note.get_note()
+            matching_notes.append(f"\nTitle: {note_data['title']}\nNote: {note_data['note']}\nTags: {', '.join(note_data['tags'])}\n")
+
+    if not matching_notes:
+        return f"No notes found with the tag: {tag}"
+
+    return f"Notes with the tag '{tag}':\n" + "\n\n".join(matching_notes)
