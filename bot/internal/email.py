@@ -17,7 +17,7 @@ class Email(Field):
         super().__init__(validated_email)
         
 
-    @input_error
+    # @input_error
     def validate_email(self, email: str) -> str:
         """
         Validate the email address to ensure it conforms to standard email format.
@@ -31,6 +31,7 @@ class Email(Field):
         Raises:
             ValueError: If the email address is invalid.
         """
-        if not re.match(r"^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$", email.strip()):
+        if not re.match(r"^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$", email.strip()):
             raise ValueError("Invalid email address format.")
-        return email.strip()
+        else:
+            return email.strip()

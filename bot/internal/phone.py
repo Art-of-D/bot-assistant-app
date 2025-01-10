@@ -15,9 +15,9 @@ class Phone(Field):
     """
     def __init__(self, number: str):
         validated_number = self.validate_phone(number)
-        super().__init__(validated_number)      
+        super().__init__(validated_number)    
 
-    @input_error
+   
     def validate_phone(self, number: str) -> str:
         """
         Validate the phone number to ensure it contains between 8 and 15 digits.
@@ -31,6 +31,6 @@ class Phone(Field):
         Raises:
             ValueError: If the phone number is invalid.
         """
-        if not re.match(r"^\\+?\\d{8,15}$", number.strip()):
+        if not re.match(r"^\+?\d{8,15}$", number.strip()):
             raise ValueError("Phone number should contain 8 to 15 digits and may start with '+'.")
         return number.strip()
