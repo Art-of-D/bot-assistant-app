@@ -22,14 +22,14 @@ class Note(Field):
             raise ValueError("Tags must be a list of non-empty strings.")
 
         # Ініціалізація базового класу Field
-        super().__init__(title_value)
+        super().__init__(value=title_value)
+        self.text = ""
 
     def __str__(self):
         # Повертає рядкове представлення Note, включаючи всі теги (якщо є)
         tags_str = ", ".join(tag.value for tag in self.tags) if self.tags else "No tags"
-        return f"Note: {self.value}, Tags: [{tags_str}]"
+        return f"Title: {self.value}\nText:\n{self.text}\nTags:\n[{tags_str}]"
 
-    @input_error
     def validate(self):
         # Валідація довжини Title (максимум 200 символів)
         if len(self.value) > 200:
@@ -38,14 +38,16 @@ class Note(Field):
         if len(self.tags) > self.MAX_TAGS:
             raise ValueError(f"Cannot have more than {self.MAX_TAGS} tags.")
 
-    @input_error
-    def edit(self, new_title):
+    def edit_title(self, new_title):
         # Змінити Title з перевіркою
         if not new_title or not isinstance(new_title, str) or not new_title.strip():
             raise ValueError("New title must be a non-empty string.")
         self.value = new_title  # Оновлення значення Title
 
-    @input_error
+    def edit_note(self, new_note):
+        # Змінити нотатку
+        self.text = new_note
+
     def add_tag(self, new_tag):
         # Додати новий тег
         if not new_tag or not isinstance(new_tag, str) or not new_tag.strip():
@@ -56,7 +58,7 @@ class Note(Field):
             raise ValueError("Tag already exists.")
         self.tags.append(Tag(new_tag.strip()))
 
-    @input_error
+
     def remove_tag(self, tag_to_remove):
         # Видалити тег
         if not tag_to_remove or not isinstance(tag_to_remove, str) or not tag_to_remove.strip():
@@ -69,8 +71,16 @@ class Note(Field):
 
     def get_tags(self):
         # Повернути список тегів
-        return [tag.value for tag in self.tags]
-
-    def get_note(self):
+        return [tag.value for tag in self.tags] if len(self.tags) > 0 else None
+    
+    def get_title(self):
         # Повертає значення Title
         return self.value
+
+    def get_note(self):
+        # Повертає значення Title та нотатку
+        return {"title": self.value, "note": self.text, "tags": self.get_tags()}
+
+    def add_note(self, note): 
+        # Додати нотатку
+        self.text = note
