@@ -7,11 +7,11 @@ from bot.utilities.parser import parse_input
 def show_main_menu():
     print("""
 Available main commands:
+0. Help - Show commands
 1. Contacts - Manage contacts
 2. Notes - Manage notes
 3. Birthdays - Manage birthdays
-4. Help - Show commands
-5. Exit - Exit the assistant
+4. Exit - Exit the assistant
     """)
 
 
@@ -25,6 +25,7 @@ Contacts commands:
 - To remove a phone number - remove <Contact name> phone <phone> | email <email> | address <address>
 - To find a contact - find <Contact name> | phone <phone> | email <email> | address <address>
 - To show all contacts - all
+! To use command with field name/email/phone/address with multiple words use, example ~ add "John Smith" !
     """)
 
 
@@ -41,6 +42,7 @@ Notes commands:
 - To delete a note - detete <title>
 - To show all notes - notes
 - To show all tags - tags
+! To use command with field tag/title with multiple words use, example ~ tag "Super cool" !
     """)
 
 
@@ -49,6 +51,7 @@ def show_birthdays_menu():
 Birthdays commands:
 1. To show a contact's birthday - show-birthday <Contact name>
 2. To show all upcoming birthdays for the week - birthdays <days-ahead>
+! To use command with field name with multiple words use, example ~ show-birthday "John Smith" !
     """)
 
 def main():

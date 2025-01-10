@@ -2,8 +2,8 @@ from bot.internal.record import Record
 
 def contacts_handler(command, args, manager):
     if command not in ["add", "change", "delete", "remove", "all", "find"]:
-            print("Please provide a command and arguments.")
-            return
+        print("Please provide a command and arguments.")
+        return
 
     if command != "all":
         normalized_arg = args[0].casefold()
@@ -13,12 +13,13 @@ def contacts_handler(command, args, manager):
         if len(args) == 1 and not check_data:
            print("Adding new contact...")
            print(manager.add_record(args[0]))
+           return
         elif len(args) > 1 and check_data:
-            print("Adding email, phone, or address to contact")
             contact_subaction_handler(manager, command, contact=args[0], action=args[1], new_info=args[2])
+            return
         else:
             print("Please provide a valid add command")
-        return
+            return
     elif command == "change":
         if not check_data:
             print("Please create a contact before changing.")
@@ -28,6 +29,7 @@ def contacts_handler(command, args, manager):
     elif command == "delete":
         print("Deleting contact...")
         print(manager.delete(args[0]))
+        return
     elif command == "remove":
         contact_subaction_handler(manager,command, action=args[1], contact=args[0], old_info=args[2]) if len(args) == 3 else contact_subaction_handler(manager, command, action=args[1], contact=args[0])
         return

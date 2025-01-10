@@ -24,6 +24,7 @@ class Birthday(Field):
         try:
             parsed_date = datetime.strptime(date_value, self._dateFormat)
             self._validate_age(parsed_date)
+            return parsed_date
         except ValueError:
             raise ValueError("Invalid date format. Use DD.MM.YYYY")
         except Exception as e:
