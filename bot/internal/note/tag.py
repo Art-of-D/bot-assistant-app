@@ -15,12 +15,10 @@ class Tag(Field):
         # Return the string representation of the Tag
         return f"Tag: {self.value}"
 
-    @input_error
     def validate(self):
         # Additional validation specific to Tag can be added here
         if len(self.value) > 50:
             raise ValueError("Tag cannot exceed 50 characters.")
-    @input_error
     def edit(self, new_value):
         # Validate and set the new tag value
         if not isinstance(new_value, str):

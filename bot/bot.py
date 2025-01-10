@@ -1,7 +1,7 @@
 from bot.handler.contacts_handler import contacts_handler
 from bot.handler.notes_handler import notes_handler
 from bot.handler.birthdays_handler import birthdays_handler
-from bot.filer.filer import load_contacts, record_contacts
+from bot.filer.filer import load_contacts, record_contacts, load_notes, record_notes
 from bot.utilities.parser import parse_input
 
 def show_main_menu():
@@ -36,6 +36,8 @@ Notes commands:
 - To show a specific note - show <title>
 - To show a list of notes by tag - display <tag>
 - To edit a note - edit <title> <note>
+- To edit a note title - change <title> <new-title>
+- To remove tag - remove <title> <tag>
 - To delete a note - detete <title>
 - To show all notes - notes
 - To show all tags - tags
@@ -52,14 +54,17 @@ Birthdays commands:
 def main():
     print("Welcome to the assistant bot!")
     manager = load_contacts()
+    notes = load_notes()
     show_commands = True
     while True:
         show_main_menu() if show_commands else None
+        show_commands = False
         user_input = input("Enter a command: ")
         command, *args = parse_input(user_input)
 
         if command in ["exit", "close", "e", "4"]:
             record_contacts(manager)
+            record_notes(notes)
             print("Goodbye!")
             break
 
@@ -77,7 +82,7 @@ def main():
             sub_input = input("Enter a notes command: ")
             sub_command, s_args = parse_input(sub_input)
 
-            notes_handler(sub_command, s_args, manager)
+            notes_handler(sub_command, s_args, notes)
 
         elif command in ["birthdays", "b", "3"]:
             show_birthdays_menu()
