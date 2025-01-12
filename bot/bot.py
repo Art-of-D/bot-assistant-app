@@ -71,7 +71,7 @@ def main():
             print("Goodbye!")
             break
 
-        elif command in ["commands", "menu", "help" "0"]:
+        elif command in ["commands", "menu", "help", "0"]:
             show_commands = True
 
         elif command in ["contacts", "c", "1"]:
