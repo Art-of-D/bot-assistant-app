@@ -1,45 +1,62 @@
-from bot.internal.record import Record
+from bot.utilities.show_menu import show_contacts_menu
+from bot.utilities.get_args import get_args
 
-def contacts_handler(command, args, manager):
-    if command not in ["add", "change", "delete", "remove", "all", "find"]:
-        print("Please provide a command and arguments.")
-        return
+def contacts_handler(manager):
+    return_to_main = False
+    contacts_commands = ["add", "change", "delete", "remove", "all", "find"]
+    help_commands = ["back", "0", "return", "r", "commands", "menu", "help"]
+    contacts_promt = "Enter a contacts command: "
 
-    if command != "all":
-        normalized_arg = args[0].casefold()
-        check_data = any(normalized_arg == key.casefold() for key in manager.data.keys())
+    show_contacts_menu()
 
-    if command == "add":
-        if len(args) == 1 and not check_data:
-           print("Adding new contact...")
-           print(manager.add_record(args[0]))
-           return
-        elif len(args) > 1 and check_data:
-            contact_subaction_handler(manager, command, contact=args[0], action=args[1], new_info=args[2])
-            return
-        else:
-            print("Please provide a valid add command")
-            return
-    elif command == "change":
-        if not check_data:
-            print("Please create a contact before changing.")
-            return
-        contact_subaction_handler(manager, command, contact=args[0], action=args[1], old_info=args[2], new_info=args[3]) if len(args) == 4 else contact_subaction_handler(manager, command, contact=args[0], action=args[1], new_info=args[2])
-        return
-    elif command == "delete":
-        print("Deleting contact...")
-        print(manager.delete(args[0]))
-        return
-    elif command == "remove":
-        contact_subaction_handler(manager,command, action=args[1], contact=args[0], old_info=args[2]) if len(args) == 3 else contact_subaction_handler(manager, command, action=args[1], contact=args[0])
-        return
-    elif command == "all":
-        print(manager.list_contacts())
-        return
-    elif command == "find":
-        print("Finding contact...")
-        print(manager.find_contact(args[0]))
-        return
+    while not return_to_main:
+        command, args = get_args(contacts_promt)
+
+        if command not in contacts_commands and command not in help_commands:
+            print("Please provide a command and/or arguments.")
+
+        if command not in help_commands and command != "all":
+            normalized_arg = args[0].casefold()
+            check_data = any(normalized_arg == key.casefold() for key in manager.data.keys())
+
+        if command in ["back", "return", "r", ]:
+            print("Returning to main menu...")
+            return_to_main = True
+        elif command == "add":
+            if len(args) == 1 and not check_data:
+                print("Adding new contact...")
+                print(manager.add_record(args[0]))
+            elif len(args) > 1 and check_data:
+                contact_subaction_handler(manager, command, contact=args[0], action=args[1], new_info=args[2])
+            else:
+                print("Please provide a valid add command")
+                continue
+        elif command == "change":
+            if not check_data:
+                print("Please create a contact before changing.")
+                continue
+            contact_subaction_handler(manager, command, contact=args[0], action=args[1], old_info=args[2], new_info=args[3]) if len(args) == 4 else contact_subaction_handler(manager, command, contact=args[0], action=args[1], new_info=args[2])
+        elif command == "delete":
+            if len(args) < 1:
+                print("Please provide a contact name: delete <Contact name>")
+                continue
+            print("Deleting contact...")
+            print(manager.delete(args[0]))
+        elif command == "remove":
+            if len(args) < 2:
+                print("Please provide a contact name and type to remove: remove <Contact name> <type>")
+                continue
+            contact_subaction_handler(manager,command, action=args[1], contact=args[0], old_info=args[2]) if len(args) == 3 else contact_subaction_handler(manager, command, action=args[1], contact=args[0])
+        elif command == "all":
+            print(manager.list_contacts())
+        elif command == "find":
+            if len(args) < 1:
+                print("Please provide a contact name: find <Contact name>")
+                continue
+            print("Finding contact...")
+            print(manager.find_contact(args[0]))
+        elif command in ["commands", "menu", "help", "0"]:
+            show_contacts_menu()
 
 def contact_subaction_handler(manager, command, action, contact=None, new_info=None, old_info=None):
     action_map = {

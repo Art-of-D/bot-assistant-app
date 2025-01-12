@@ -181,7 +181,7 @@ class Manager(UserDict):
         return "\n".join(contacts_list)
         
     def show_birthday(self, name):
-        record = self.data[name.casefold()]
+        record = self.find_by_key(name)
         if record and record.birthday:
             return f"{name}'s birthday is on {record.birthday}."
         return f"No birthday set for {name}."
