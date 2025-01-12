@@ -26,6 +26,7 @@ class Notes(UserDict):
       except (KeyError, TypeError, ValueError, AssertionError) as e:
           raise e
       
+  @input_error
   def add_tag(self, title, tag):
       if not title or not tag:
           raise ValueError("Cannot add empty note or title. Please provide both title and tag, first argument is title, second is tag.")
@@ -107,11 +108,10 @@ class Notes(UserDict):
   
   @input_error
   def get_all_notes(self):
-    if not self.data:
+    if len(self.data) == 0:
         return "No notes found."
     notes = []
     index = 0
-    print(self.data)
     for title, note in self.data.items():
         index += 1
         note_data = note.get_note()
@@ -120,23 +120,21 @@ class Notes(UserDict):
   
   @input_error
   def get_all_tags(self):
-    if not self.data:
+    if len(self.data) == 0:
         return "No tags found."
+    
     unique_tags = set()
     for note in self.data.values():
         note_tags = note.get_tags()
         if note_tags:
             unique_tags.update(note_tags)
 
-    if not unique_tags:
-        return "No tags found."
-
     tags = sorted(unique_tags)
     return "You have the following tags:\n" + "\n".join(f"- {tag}" for tag in tags)
   
   @input_error
   def display_notes_by_tag(self, tag):
-    if not self.data:
+    if len(self.data) == 0:
         return "No notes available."
 
     tag = tag.casefold()
@@ -150,7 +148,7 @@ class Notes(UserDict):
             note_data = note.get_note()
             matching_notes.append(f"\nTitle: {note_data['title']}\nNote: {note_data['note']}\nTags: {', '.join(note_data['tags'])}\n")
 
-    if not matching_notes:
+    if len(matching_notes) == 0:
         return f"No notes found with the tag: {tag}"
 
     return f"Notes with the tag '{tag}':\n" + "\n\n".join(matching_notes)
