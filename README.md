@@ -13,6 +13,8 @@
 
 ```
 ~ curl -sSL https://install.python-poetry.org | python3 -
+OR
+~pipx install poetry
 ```
 
 ### 3. Install dependencies
@@ -72,12 +74,19 @@ bot/
 │ │ ├── birthday.py
 │ │ ├── name.py
 │ │ ├── ...
-│ │ ├──note
+│ │ ├──note # to manage notes
 │ │ │ ├──note.py
 │ │ │ ├──notes.py
 │ │ │ ├──tag.py
+│ ├── handler/ # to handle inputs
+│ │ ├──notes_handler.py
+│ │ ├──...
 │ ├── decorators/ # for all decorators
 │ │ ├── errorhandler.py
+│ ├── storage/ # to store data
+│ ├── utilities/ # some instruments
+│ │ ├──parser.py
+│ │ ├──...
 │ ├── **init**.py
 │ ├── bot.py # main script
 ├── .gitignore
