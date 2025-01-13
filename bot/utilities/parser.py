@@ -1,6 +1,15 @@
 import shlex
 
 def parse_input(user_input):
+    """
+    Parse the user's input into a command and arguments.
+
+    Args:
+        user_input (str): The user's input.
+
+    Returns:
+        tuple: A tuple of the command and arguments. If the user entered no command, returns ("commands", []).
+    """
     if not user_input:
         print("Please enter a command.")
         return "commands", []

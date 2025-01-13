@@ -1,10 +1,33 @@
 import copy
 from collections import UserDict
 from bot.internal.note.note import Note
-from bot.internal.note.tag import Tag
 from bot.decorators.error_handler import input_error
 
 class Notes(UserDict):
+  """
+    A class representing a collection of notes.
+
+    Notes are stored as a dictionary where the key is the title of the note
+    (case-insensitive) and the value is an instance of the `Note` class.
+
+    The class provides methods for adding, editing, deleting, and retrieving notes,
+    as well as managing tags associated with each note.
+
+    Attributes:
+        data (dict): The dictionary storing the notes.
+
+    Methods:
+        add_note(title, note, tag=None): Add a new note with the given title and text.
+        add_tag(title, tag): Add a tag to a note with the given title.
+        get_note(title): Retrieve a note with the given title.
+        delete_note(title): Delete a note with the given title.
+        delete_tag(title, tag): Delete a tag from a note with the given title.
+        edit_title(old_title, new_title): Edit the title of a note.
+        edit_note(title, new_text): Edit the text of a note.
+        get_all_notes(): Retrieve a list of all notes.
+        get_all_tags(): Retrieve a list of all unique tags.
+        display_notes_by_tag(tag): Retrieve a list of notes associated with a given tag.
+    """
   def __getstate__(self):
         return copy.deepcopy(self.__dict__)
 

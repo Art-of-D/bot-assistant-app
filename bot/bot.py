@@ -3,7 +3,7 @@ from bot.handler.notes_handler import notes_handler
 from bot.handler.birthdays_handler import birthdays_handler
 from bot.filer.filer import load_contacts, record_contacts, load_notes, record_notes
 from bot.utilities.parser import parse_input
-from bot.utilities.show_menu import show_main_menu, show_contacts_menu, show_notes_menu, show_birthdays_menu
+from bot.utilities.show_menu import show_main_menu
 
 def main():
     print("Welcome to the assistant bot!")

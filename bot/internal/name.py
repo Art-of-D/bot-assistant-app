@@ -3,7 +3,6 @@ Module for class Phone.
 """
 
 from bot.internal.field import Field
-from bot.decorators.error_handler import input_error
 
 
 class Name(Field):
@@ -16,7 +15,6 @@ class Name(Field):
         validated_name = self.validate_name(name)
         super().__init__(validated_name)      
 
-    @input_error
     def validate_name(self, value: str) -> str:
         """
         Validate the name to ensure it meets the criteria.
