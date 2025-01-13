@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 def get_upcoming_birthdays(contacts, days_before_birthday) -> list:
     """

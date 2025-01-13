@@ -2,6 +2,18 @@ from bot.utilities.show_menu import show_birthdays_menu
 from bot.utilities.get_args import get_args
 
 def birthdays_handler(manager):
+    """
+    Handler for birthdays commands.
+
+    This function prompts the user to enter commands to manage and view birthdays.
+
+    Available commands:
+    - "show-birthday <Contact name>" - to show a contact's birthday
+    - "birthdays <days-ahead>" - to show all upcoming birthdays for the specified number of days ahead
+    - "commands" or "menu" or "help" or "0" - to show the birthdays menu again
+    - "back" or "return" or "r" - to return to the main menu
+    """
+
     return_to_main = False
     birthdays_handler_promt = "Enter a birthdays command: "
 

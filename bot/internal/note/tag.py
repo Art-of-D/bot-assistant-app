@@ -1,4 +1,3 @@
-from bot.decorators.error_handler import input_error
 from bot.internal.field import Field
 
 class Tag(Field):

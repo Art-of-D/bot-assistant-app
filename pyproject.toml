@@ -1,9 +1,13 @@
 [project]
 name = "bot"
-version = "0.1.0"
+version = "1.0.0"
 description = "Assistant bot for managing contacts and notes"
 authors = [
-    {name = "Artur Didur",email = "didur.art@gmail.com"}
+    {name = "Artur Didur",email = "didur.art@gmail.com"},
+    {name = "Oleksii Kochurov",email = "aleksei.kochuroff@icloud.com"},
+    {name = "Olha Shapoval",email = "o.shapoval.dev@gmail.com"},
+    {name = "Serhii Osmolovskyi",email = "Osmolovsky.s@gmail.com"},
+
 ]
 license = {text = "MIT"}
 readme = "README.md"

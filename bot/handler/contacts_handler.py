@@ -2,6 +2,21 @@ from bot.utilities.show_menu import show_contacts_menu
 from bot.utilities.get_args import get_args
 
 def contacts_handler(manager):
+    """
+    Handler for contacts commands.
+
+    This function will prompt the user to enter commands to manage contacts.
+
+    Available commands:
+    - "add" - to add a new contact
+    - "change" - to change contact info
+    - "delete" - to delete a contact
+    - "remove" - to remove a phone number or email
+    - "all" - to show all contacts
+    - "find" - to find a contact
+    - "commands" or "menu" or "help" or "0" - to show this menu again
+    - "back" or "return" or "r"  - to return to the main menu
+    """
     return_to_main = False
     contacts_commands = ["add", "change", "delete", "remove", "all", "find"]
     help_commands = ["back", "0", "return", "r", "commands", "menu", "help"]
@@ -16,8 +31,14 @@ def contacts_handler(manager):
             print("Please provide a command and/or arguments.")
 
         if command not in help_commands and command != "all":
-            normalized_arg = args[0].casefold()
-            check_data = any(normalized_arg == key.casefold() for key in manager.data.keys())
+            try:
+                normalized_arg = args[0].casefold()
+                check_data = any(normalized_arg == key.casefold() for key in manager.data.keys())
+            except IndexError:
+                print("Error parsing input: empty input")
+            except ValueError as e:
+                raise ValueError(f"Error parsing input: {e}")
+            
 
         if command in ["back", "return", "r", ]:
             print("Returning to main menu...")
@@ -32,6 +53,9 @@ def contacts_handler(manager):
                 print("Please provide a valid add command")
                 continue
         elif command == "change":
+            if len(args) < 3:
+                print("Please provide a contact name and type to change: change <Contact name> phone <old_phone> <new_phone>\nOR\nchange <Contact name> birthday <birthday>")
+                continue
             if not check_data:
                 print("Please create a contact before changing.")
                 continue
@@ -59,6 +83,22 @@ def contacts_handler(manager):
             show_contacts_menu()
 
 def contact_subaction_handler(manager, command, action, contact=None, new_info=None, old_info=None):
+    """
+    Handles contact subactions such as adding, changing, and removing contact details.
+
+    Args:
+        manager: The manager instance that handles contact operations.
+        command (str): The command type, e.g., "add", "change", or "remove".
+        action (str): The specific action to be performed, e.g., "email", "phone".
+        contact (str, optional): The name of the contact. Defaults to None.
+        new_info (str, optional): The new information to be added or updated. Defaults to None.
+        old_info (str, optional): The existing information to be changed or removed. Defaults to None.
+
+    Raises:
+        TypeError: Raised when invalid arguments are provided.
+        ValueError: Raised when there is an error performing the subaction.
+    """
+
     action_map = {
         "add": {
             "email": manager.add_email,
